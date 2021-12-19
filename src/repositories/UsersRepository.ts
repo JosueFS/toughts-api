@@ -1,6 +1,6 @@
 import { User } from '../models/User';
 
-export interface ICreateUserDTO {
+interface ICreateUserDTO {
   name: string;
   email: string;
   password: string;
@@ -15,8 +15,6 @@ class UsersRepository {
 
   create({ name, email, password }: ICreateUserDTO): User {
     const user = new User();
-
-    if (this.findByEmail(email)) throw new Error(`User already exists`);
 
     Object.assign(user, {
       name,
