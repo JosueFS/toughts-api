@@ -2,26 +2,25 @@ import { Router } from 'express';
 import multer from 'multer';
 
 import multerConfig from '../config/multer';
-import {
-  createToughtController,
-  importToughtController,
-  listToughtController,
-} from '../modules/toughts/controllers';
+import { CreateToughtController } from '../modules/toughts/controllers/CreateToughtController';
+import { ImportToughtController } from '../modules/toughts/controllers/ImportToughtController';
+import { ListToughtController } from '../modules/toughts/controllers/ListToughtController';
 
-const toughtRoutes = Router();
-
+const toughtsRoutes = Router();
 const upload = multer(multerConfig);
 
-toughtRoutes.post('/', (request, response) =>
-  createToughtController.handle(request, response)
+const createToughtController = new CreateToughtController();
+const listToughtController = new ListToughtController();
+const importToughtController = new ImportToughtController();
+
+toughtsRoutes.post('/', createToughtController.handle);
+
+toughtsRoutes.get('/', listToughtController.handle);
+
+toughtsRoutes.post(
+  '/import',
+  upload.single('file'),
+  importToughtController.handle
 );
 
-toughtRoutes.get('/', (request, response) =>
-  listToughtController.handle(request, response)
-);
-
-toughtRoutes.post('/import', upload.single('file'), (request, response) =>
-  importToughtController.handle(request, response)
-);
-
-export { toughtRoutes };
+export { toughtsRoutes };
