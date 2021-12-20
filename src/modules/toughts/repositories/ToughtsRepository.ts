@@ -22,7 +22,7 @@ class ToughtsRepository implements IToughtsRepository {
 
     Object.assign(tought, {
       message,
-      created_at: new Date(),
+      created_at: new Date().toISOString(),
     });
 
     this.toughts.push(tought);

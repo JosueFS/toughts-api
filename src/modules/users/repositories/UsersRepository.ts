@@ -24,6 +24,8 @@ class UsersRepository implements IUsersRepository {
   addAvatarUrl({ email, url }: IAddAvatarURLDTO): void {
     const userIndex = this.users.findIndex((user) => user.email === email);
 
+    if (userIndex < 0) throw new Error('User not found');
+
     this.users[userIndex].avatar_url = url;
   }
 
@@ -34,7 +36,7 @@ class UsersRepository implements IUsersRepository {
       name,
       email,
       password,
-      created_at: new Date(),
+      created_at: new Date().toISOString(),
     });
 
     this.users.push(user);
