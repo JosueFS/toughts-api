@@ -1,3 +1,6 @@
+import { hash } from 'bcryptjs';
+import { inject, injectable } from 'tsyringe';
+
 import { IUsersRepository } from '../repositories/IUsersRepository';
 
 interface IRequest {
@@ -6,14 +9,21 @@ interface IRequest {
   password: string;
 }
 
+@injectable()
 class CreateUserService {
-  constructor(private usersRepository: IUsersRepository) {}
+  constructor(
+    @inject('UsersRepository')
+    private usersRepository: IUsersRepository
+  ) {}
 
-  execute({ name, email, password }: IRequest): void {
-    if (this.usersRepository.findByEmail(email))
-      throw new Error(`User already exists`);
+  async execute({ name, email, password }: IRequest): Promise<void> {
+    const userAlreadyExists = await this.usersRepository.findByEmail(email);
 
-    this.usersRepository.create({ name, email, password });
+    if (userAlreadyExists) throw new Error(`User already exists`);
+
+    const passwordHash = await hash(password, 8);
+
+    this.usersRepository.create({ name, email, password: passwordHash });
   }
 }
 

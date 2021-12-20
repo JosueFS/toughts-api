@@ -7,15 +7,16 @@ interface ICreateUserDTO {
 }
 
 interface IAddAvatarURLDTO {
-  email: string;
+  id: string;
   url: string;
 }
 
 interface IUsersRepository {
-  create({ name, email, password }: ICreateUserDTO): void;
-  getAllUsers(): User[];
-  findByEmail(email: string): User;
-  addAvatarUrl({ email, url }: IAddAvatarURLDTO): void;
+  create({ name, email, password }: ICreateUserDTO): Promise<void>;
+  getAllUsers(): Promise<User[]>;
+  findByEmail(email: string): Promise<User>;
+  findById(id: string): Promise<User>;
+  addAvatarUrl({ id, url }: IAddAvatarURLDTO): Promise<void>;
 }
 
 export { IUsersRepository, ICreateUserDTO, IAddAvatarURLDTO };

@@ -1,3 +1,5 @@
+import { getRepository, Repository } from 'typeorm';
+
 import { User } from '../model/User';
 import {
   ICreateUserDTO,
@@ -6,50 +8,46 @@ import {
 } from './IUsersRepository';
 
 class UsersRepository implements IUsersRepository {
-  private users: User[];
-
-  private static INSTANCE: UsersRepository;
+  private repository: Repository<User>;
 
   constructor() {
-    this.users = [];
+    this.repository = getRepository(User);
   }
-
-  public static getInstance(): UsersRepository {
-    if (!UsersRepository.INSTANCE) {
-      UsersRepository.INSTANCE = new UsersRepository();
-    }
-    return UsersRepository.INSTANCE;
-  }
-
-  addAvatarUrl({ email, url }: IAddAvatarURLDTO): void {
-    const userIndex = this.users.findIndex((user) => user.email === email);
-
-    if (userIndex < 0) throw new Error('User not found');
-
-    this.users[userIndex].avatar_url = url;
-  }
-
-  create({ name, email, password }: ICreateUserDTO): User {
-    const user = new User();
-
-    Object.assign(user, {
-      name,
-      email,
-      password,
-      created_at: new Date().toISOString(),
-    });
-
-    this.users.push(user);
+  async findById(id: string): Promise<User> {
+    const user = await this.repository.findOne({ id });
 
     return user;
   }
 
-  getAllUsers(): User[] {
-    return this.users;
+  async addAvatarUrl({ id, url }: IAddAvatarURLDTO): Promise<void> {
+    const user = await this.repository.findOne({ id });
+
+    if (!user) throw new Error('User not found');
+
+    user.avatar_url = url;
+
+    await this.repository.save(user);
   }
 
-  findByEmail(email: string): User {
-    const user = this.users.find((user) => user.email === email);
+  async create({ name, email, password }: ICreateUserDTO): Promise<void> {
+    const user = this.repository.create({
+      name,
+      email,
+      password,
+      avatar_url: null,
+    });
+
+    await this.repository.save(user);
+  }
+
+  async getAllUsers(): Promise<User[]> {
+    const users = await this.repository.find();
+
+    return users;
+  }
+
+  async findByEmail(email: string): Promise<User> {
+    const user = await this.repository.findOne({ email });
 
     return user;
   }

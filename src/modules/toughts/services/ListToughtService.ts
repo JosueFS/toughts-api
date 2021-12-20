@@ -1,18 +1,26 @@
+import { inject, injectable } from 'tsyringe';
+
 import { Tought } from '../model/Tought';
 import { IToughtsRepository } from '../repositories/IToughtsRepository';
 
 interface IRequest {
   keyword?: string;
 }
-
+@injectable()
 class ListToughtService {
-  constructor(private toughtsRepository: IToughtsRepository) {}
+  constructor(
+    @inject('ToughtsRepository')
+    private toughtsRepository: IToughtsRepository
+  ) {}
 
-  execute({ keyword }: IRequest): Tought[] {
+  async execute({ keyword }: IRequest): Promise<Tought[]> {
     if (keyword) {
-      return this.toughtsRepository.findByKeyword(keyword);
+      const results = await this.toughtsRepository.findByKeyword(keyword);
+      return results;
     }
-    return this.toughtsRepository.getAllToughts();
+
+    const results = await this.toughtsRepository.getAllToughts();
+    return results;
   }
 }
 

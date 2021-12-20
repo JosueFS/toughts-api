@@ -1,16 +1,21 @@
+import { inject, injectable } from 'tsyringe';
+
 import { IUsersRepository } from '../repositories/IUsersRepository';
 
 interface IRequest {
-  email: string;
+  id: string;
   file: Express.Multer.File;
 }
-
+@injectable()
 class UploadUserAvatarService {
-  constructor(private usersRepository: IUsersRepository) {}
+  constructor(
+    @inject('UsersRepository')
+    private usersRepository: IUsersRepository
+  ) {}
 
-  execute({ email, file }: IRequest) {
+  async execute({ id, file }: IRequest) {
     const url = file.path;
-    this.usersRepository.addAvatarUrl({ email, url });
+    await this.usersRepository.addAvatarUrl({ id, url });
   }
 }
 

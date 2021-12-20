@@ -1,15 +1,16 @@
 import { Request, Response } from 'express';
+import { container } from 'tsyringe';
 
 import { CreateToughtService } from '../services/CreateToughtService';
 
 class CreateToughtController {
-  constructor(private createToughtService: CreateToughtService) {}
-
-  handle(request: Request, response: Response): Response {
+  async handle(request: Request, response: Response): Promise<Response> {
     const { message } = request.body;
 
+    const createToughtService = container.resolve(CreateToughtService);
+
     try {
-      this.createToughtService.execute({ message });
+      await createToughtService.execute({ message });
 
       return response.status(201).send();
     } catch (error) {

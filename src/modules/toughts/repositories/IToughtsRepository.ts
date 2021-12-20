@@ -5,9 +5,9 @@ interface ICreateToughtDTO {
 }
 
 interface IToughtsRepository {
-  create({ message }: ICreateToughtDTO): void;
-  getAllToughts(): Tought[];
-  findByKeyword(keyword: string): Tought[];
+  create({ message }: ICreateToughtDTO): Promise<void>;
+  getAllToughts(): Promise<Tought[]>;
+  findByKeyword(keyword: string): Promise<Tought[]>;
 }
 
 export { IToughtsRepository, ICreateToughtDTO };

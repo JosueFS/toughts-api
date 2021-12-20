@@ -1,46 +1,40 @@
+import { getRepository, Like, Repository } from 'typeorm';
+
 import { Tought } from '../model/Tought';
 import { ICreateToughtDTO, IToughtsRepository } from './IToughtsRepository';
 
 class ToughtsRepository implements IToughtsRepository {
-  private toughts: Tought[];
-
-  private static INSTANCE: ToughtsRepository;
+  private repository: Repository<Tought>;
 
   constructor() {
-    this.toughts = [];
+    this.repository = getRepository(Tought);
   }
 
-  public static getInstance(): ToughtsRepository {
-    if (!ToughtsRepository.INSTANCE) {
-      ToughtsRepository.INSTANCE = new ToughtsRepository();
-    }
-    return ToughtsRepository.INSTANCE;
-  }
-
-  create({ message }: ICreateToughtDTO): Tought {
-    const tought = new Tought();
-
-    Object.assign(tought, {
+  async create({ message }: ICreateToughtDTO): Promise<void> {
+    const tought = this.repository.create({
       message,
-      created_at: new Date().toISOString(),
     });
 
-    this.toughts.push(tought);
-
-    return tought;
+    await this.repository.save(tought);
   }
 
-  getAllToughts(): Tought[] {
-    return this.toughts;
+  async getAllToughts(): Promise<Tought[]> {
+    const toughts = await this.repository.find();
+
+    return toughts;
   }
 
-  findByKeyword(keyword: string): Tought[] {
+  async findByKeyword(keyword: string): Promise<Tought[]> {
     const regex = new RegExp(keyword);
 
-    const filteredToughts = this.toughts.filter((tought) => {
-      return !!tought.message.split(' ').filter((word) => {
-        return !!word.toLocaleLowerCase().match(regex);
-      }).length;
+    // const filteredToughts = this.toughts.filter((tought) => {
+    //   return !!tought.message.split(' ').filter((word) => {
+    //     return !!word.toLocaleLowerCase().match(regex);
+    //   }).length;
+    // });
+
+    const filteredToughts = await this.repository.find({
+      message: Like(`${regex}`),
     });
 
     return filteredToughts;
