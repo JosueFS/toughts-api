@@ -1,4 +1,4 @@
-import { UsersRepository } from '../repositories/UsersRepository';
+import { IUsersRepository } from '../repositories/IUsersRepository';
 
 interface IRequest {
   name: string;
@@ -7,7 +7,7 @@ interface IRequest {
 }
 
 class CreateUserService {
-  constructor(private usersRepository: UsersRepository) {}
+  constructor(private usersRepository: IUsersRepository) {}
 
   execute({ name, email, password }: IRequest): void {
     if (this.usersRepository.findByEmail(email))

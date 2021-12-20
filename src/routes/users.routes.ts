@@ -26,13 +26,3 @@ userRoutes.get('/', (request, response) => {
 });
 
 export { userRoutes };
-
-// export function createUser(request: Request, response: Response) {
-//   const user = UserService.execute({
-//     name: 'Josué',
-//     email: 'josue.fs@jovensgenios.com',
-//     password: '123456',
-//   });
-
-//   return response.json(user);
-// }
