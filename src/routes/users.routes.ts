@@ -1,18 +1,27 @@
 import { Router } from 'express';
+import multer from 'multer';
 
+import multerConfig from '../config/multer';
 import {
   createUserController,
   listUserController,
+  uploadUserAvatarController,
 } from '../modules/users/controllers';
 
 const userRoutes = Router();
 
-userRoutes.post('/', (request, response) => {
-  return createUserController.handle(request, response);
-});
+const upload = multer(multerConfig);
 
-userRoutes.get('/', (request, response) => {
-  return listUserController.handle(request, response);
-});
+userRoutes.post('/', (request, response) =>
+  createUserController.handle(request, response)
+);
+
+userRoutes.get('/', (request, response) =>
+  listUserController.handle(request, response)
+);
+
+userRoutes.post('/upload', upload.single('image'), (request, response) =>
+  uploadUserAvatarController.handle(request, response)
+);
 
 export { userRoutes };

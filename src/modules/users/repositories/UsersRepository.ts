@@ -1,5 +1,9 @@
 import { User } from '../model/User';
-import { ICreateUserDTO, IUsersRepository } from './IUsersRepository';
+import {
+  ICreateUserDTO,
+  IAddAvatarURLDTO,
+  IUsersRepository,
+} from './IUsersRepository';
 
 class UsersRepository implements IUsersRepository {
   private users: User[];
@@ -15,6 +19,12 @@ class UsersRepository implements IUsersRepository {
       UsersRepository.INSTANCE = new UsersRepository();
     }
     return UsersRepository.INSTANCE;
+  }
+
+  addAvatarUrl({ email, url }: IAddAvatarURLDTO): void {
+    const userIndex = this.users.findIndex((user) => user.email === email);
+
+    this.users[userIndex].avatar_url = url;
   }
 
   create({ name, email, password }: ICreateUserDTO): User {

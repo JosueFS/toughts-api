@@ -6,10 +6,16 @@ interface ICreateUserDTO {
   password: string;
 }
 
+interface IAddAvatarURLDTO {
+  email: string;
+  url: string;
+}
+
 interface IUsersRepository {
   create({ name, email, password }: ICreateUserDTO): void;
   getAllUsers(): User[];
   findByEmail(email: string): User;
+  addAvatarUrl({ email, url }: IAddAvatarURLDTO): void;
 }
 
-export { IUsersRepository, ICreateUserDTO };
+export { IUsersRepository, ICreateUserDTO, IAddAvatarURLDTO };

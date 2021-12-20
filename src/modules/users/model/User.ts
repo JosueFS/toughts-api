@@ -4,6 +4,7 @@ class User {
   id?: string;
   name: string;
   email: string;
+  avatar_url?: string;
   password: string;
   created_at: Date;
 
