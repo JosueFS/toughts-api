@@ -3,6 +3,7 @@ import { User } from '../model/User';
 interface ICreateUserDTO {
   name: string;
   email: string;
+  avatar_url: string;
   password: string;
 }
 
@@ -12,7 +13,7 @@ interface IAddAvatarURLDTO {
 }
 
 interface IUsersRepository {
-  create({ name, email, password }: ICreateUserDTO): Promise<void>;
+  create({ name, email, password, avatar_url }: ICreateUserDTO): Promise<void>;
   getAllUsers(): Promise<User[]>;
   findByEmail(email: string): Promise<User>;
   findById(id: string): Promise<User>;

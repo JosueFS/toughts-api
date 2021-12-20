@@ -1,6 +1,7 @@
 import { hash } from 'bcryptjs';
 import { inject, injectable } from 'tsyringe';
 
+import { getAvatarWithInitials } from '../../../utils/Functions';
 import { IUsersRepository } from '../repositories/IUsersRepository';
 
 interface IRequest {
@@ -23,7 +24,14 @@ class CreateUserService {
 
     const passwordHash = await hash(password, 8);
 
-    this.usersRepository.create({ name, email, password: passwordHash });
+    const avatar_url = getAvatarWithInitials(name);
+
+    this.usersRepository.create({
+      name,
+      email,
+      password: passwordHash,
+      avatar_url,
+    });
   }
 }
 
