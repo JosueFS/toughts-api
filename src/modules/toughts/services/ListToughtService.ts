@@ -2,15 +2,18 @@ import { Tought } from '../model/Tought';
 import { IToughtsRepository } from '../repositories/IToughtsRepository';
 
 interface IRequest {
-  keyword: string;
+  keyword?: string;
 }
 
-class FindToughtService {
+class ListToughtService {
   constructor(private toughtsRepository: IToughtsRepository) {}
 
   execute({ keyword }: IRequest): Tought[] {
-    return this.toughtsRepository.findByKeyword(keyword);
+    if (keyword) {
+      return this.toughtsRepository.findByKeyword(keyword);
+    }
+    return this.toughtsRepository.getAllToughts();
   }
 }
 
-export { FindToughtService };
+export { ListToughtService };

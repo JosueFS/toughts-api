@@ -1,39 +1,18 @@
 import { Router } from 'express';
 
-import { ToughtsRepository } from '../modules/toughts/repositories/ToughtsRepository';
-import { CreateToughtService } from '../modules/toughts/services/CreateToughtService';
-import { FindToughtService } from '../modules/toughts/services/FindToughtService';
+import {
+  createToughtController,
+  listToughtController,
+} from '../modules/toughts/controllers';
 
 const toughtRoutes = Router();
-const toughtsRepository = new ToughtsRepository();
 
 toughtRoutes.post('/', (request, response) => {
-  const { message } = request.body;
-  try {
-    const createToughtService = new CreateToughtService(toughtsRepository);
-
-    createToughtService.execute({ message });
-
-    return response.status(201).send();
-  } catch (error) {
-    return response.status(409).json({ error: error.message });
-  }
+  return createToughtController.handle(request, response);
 });
 
 toughtRoutes.get('/', (request, response) => {
-  const { search } = request.query;
-
-  if (typeof search === 'string') {
-    const findToughtService = new FindToughtService(toughtsRepository);
-
-    const toughts = findToughtService.execute({ keyword: search });
-
-    return response.status(200).json(toughts);
-  }
-
-  const toughts = toughtsRepository.getAllToughts();
-
-  return response.status(200).json(toughts);
+  return listToughtController.handle(request, response);
 });
 
 export { toughtRoutes };

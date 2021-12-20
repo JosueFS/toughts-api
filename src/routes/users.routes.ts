@@ -1,19 +1,18 @@
 import { Router } from 'express';
 
-import { createUserController } from '../modules/users/controllers';
-import { UsersRepository } from '../modules/users/repositories/UsersRepository';
+import {
+  createUserController,
+  listUserController,
+} from '../modules/users/controllers';
 
 const userRoutes = Router();
-const usersRepository = new UsersRepository();
 
 userRoutes.post('/', (request, response) => {
   return createUserController.handle(request, response);
 });
 
 userRoutes.get('/', (request, response) => {
-  const users = usersRepository.getAllUsers();
-
-  return response.status(200).json(users);
+  return listUserController.handle(request, response);
 });
 
 export { userRoutes };
