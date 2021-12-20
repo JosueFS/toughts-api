@@ -7,7 +7,7 @@ class UploadUserAvatarController {
 
   handle(request: Request, response: Response): Response {
     const { file } = request;
-    const email = 'jj@j.com';
+    const email = 'jj@j.com'; // TODO: GET User from header
 
     try {
       this.uploadUserAvatarService.execute({ email, file });
