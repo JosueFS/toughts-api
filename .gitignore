@@ -1,4 +1,5 @@
 src/generated/
 /dist
+/uploads
 node_modules/
 .env*
