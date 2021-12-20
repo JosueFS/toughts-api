@@ -1,20 +1,21 @@
 import { Request, Response } from 'express';
+import { container } from 'tsyringe';
 
 import { UploadUserAvatarService } from '../services/UploadUserAvatarService';
 
 class UploadUserAvatarController {
-  constructor(private uploadUserAvatarService: UploadUserAvatarService) {}
-
-  handle(request: Request, response: Response): Response {
+  async handle(request: Request, response: Response): Promise<Response> {
     const { file } = request;
-    const email = 'jj@j.com'; // TODO: GET User from header
+    const { id } = request.user;
+
+    const uploadUserAvatarService = container.resolve(UploadUserAvatarService);
 
     try {
-      this.uploadUserAvatarService.execute({ email, file });
+      await uploadUserAvatarService.execute({ id, file });
 
       return response.status(201).send();
     } catch (error) {
-      return response.status(409).json({ error: error.message });
+      return response.status(400).json({ error: error.message });
     }
   }
 }
