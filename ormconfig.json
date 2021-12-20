@@ -4,5 +4,10 @@
   "host": "localhost",
   "username": "docker",
   "password": "docker",
-  "database": "toughts_db"
+  "database": "toughts_db",
+  "migrations": ["./src/database/migrations/*.ts"],
+  "entities": ["./src/modules/**/model/*.ts"],
+  "cli": {
+    "migrationsDir": "./src/database/migrations"
+  }
 }
