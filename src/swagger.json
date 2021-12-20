@@ -1,0 +1,216 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "RentalX Documentation",
+    "description": "This is an API for Genial Toughts - <a href='https://github.com/JosueFS' target='_blank' rel='noopener noreferrer' class='link'>Github Repository</a>",
+    "version": "1.0.0",
+    "contact": {
+        "name": "Developer",
+        "email": "josue.fs@jovensgenios.com",
+        "url": "https://my-portfolio-josuefs.vercel.app/"
+      }
+  },
+  "paths": {
+    "/user": {
+      "post": {
+        "summary": "Create a user",
+        "description": "Create a new user.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                      "type": "string"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password"
+                  }
+                },
+                "example": {
+                  "name": "John Doe",
+                  "email": "jhondoe@email.com",
+                  "password": "password01"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Sucessful Created"
+          },
+          "409": {
+            "description": "Conflict: Email already used"
+          }
+        }
+      },
+      "get": {
+        "summary": "List all users",
+        "description": "Get all users registered.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type":"string",
+                        "format": "uuid"
+                      },
+                      "name": {
+                        "type":"string"
+                      },
+                      "avatar_url": {
+                        "type":"string_url"
+                      },
+                      "email": {
+                        "type":"string",
+                        "format": "email"
+                      },
+                      "password": {
+                        "type":"string"
+                      },
+                      "created_at": {
+                        "type":"date-time"
+                      }
+                    },
+                    "example": {
+                      "id": "db047f53-73d9-41ea-8cee-1455d6035de3",
+                      "name": "John Doe",
+                      "email": "jhondoe@email.com",
+                      "created_at": "2021-12-20T11:56:00.146Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/upload": {
+      "post": {
+        "summary": "Upload user avatar",
+        "description": "Create 'avatar_url' field into user.",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Sucessful Created"
+          },
+          "409": {
+            "description": "Conflict: Email already used"
+          }
+        }
+      
+      }
+    },
+    "/tought": {
+      "post": {
+        "summary": "Create a tought",
+        "description": "Create a new tought.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                      "type": "string"
+                  }
+                },
+                "example": {
+                  "message": "To be or not to be, that is the question."
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Sucessful Created"
+          },
+          "400": {
+            "description": "Cannot create a empty (string) tought."
+          }
+        }
+      },
+      "get": {
+        "summary": "List all toughts / Search by keyword",
+        "description": "Get all toughts registered / Get all toughts that match the keyword.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type":"string",
+                        "format": "uuid"
+                      },
+                      "message": {
+                        "type":"string"
+                      },
+                      "created_at": {
+                        "type":"date-time"
+                      }
+                    },
+                    "example": {
+                      "id": "3dbc8b9d-c5a2-4afc-b1bc-70619bf37323",
+                      "message": "To be or not to be, that is the question.",
+                      "created_at": "2021-12-20T13:16:55.221Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Keyword used to search for toughts",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "style": "simple"
+          }
+        ]
+      }
+      
+    }
+  }
+}
