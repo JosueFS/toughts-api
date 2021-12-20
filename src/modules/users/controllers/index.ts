@@ -4,7 +4,7 @@ import { ListUserService } from '../services/ListUserService';
 import { CreateUserController } from './CreateUserController';
 import { ListUserController } from './ListUserController';
 
-const usersRepository = new UsersRepository();
+const usersRepository = UsersRepository.getInstance();
 
 const createUserService = new CreateUserService(usersRepository);
 const createUserController = new CreateUserController(createUserService);

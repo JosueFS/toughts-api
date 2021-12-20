@@ -4,7 +4,7 @@ import { ListToughtService } from '../services/ListToughtService';
 import { CreateToughtController } from './CreateToughtController';
 import { ListToughtController } from './ListToughtController';
 
-const toughtsRepository = new ToughtsRepository();
+const toughtsRepository = ToughtsRepository.getInstance();
 
 const createToughtService = new CreateToughtService(toughtsRepository);
 const createToughtController = new CreateToughtController(createToughtService);

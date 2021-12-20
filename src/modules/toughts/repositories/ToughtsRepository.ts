@@ -4,8 +4,17 @@ import { ICreateToughtDTO, IToughtsRepository } from './IToughtsRepository';
 class ToughtsRepository implements IToughtsRepository {
   private toughts: Tought[];
 
+  private static INSTANCE: ToughtsRepository;
+
   constructor() {
     this.toughts = [];
+  }
+
+  public static getInstance(): ToughtsRepository {
+    if (!ToughtsRepository.INSTANCE) {
+      ToughtsRepository.INSTANCE = new ToughtsRepository();
+    }
+    return ToughtsRepository.INSTANCE;
   }
 
   create({ message }: ICreateToughtDTO): Tought {
