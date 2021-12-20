@@ -5,7 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "start": "node src/server",
-    "dev": "ts-node-dev --poll --inspect --ignore-watch node_modules --respawn --transpile-only src/server.ts"
+    "dev": "ts-node-dev --poll --inspect --ignore-watch node_modules --respawn --transpile-only src/server.ts",
+    "typeorm": "ts-node-dev ./node_modules/typeorm/cli"
   },
   "prettier": {
     "semi": true,
