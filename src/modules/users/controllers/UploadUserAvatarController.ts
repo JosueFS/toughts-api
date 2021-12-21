@@ -5,15 +5,15 @@ import { UploadUserAvatarService } from '../services/UploadUserAvatarService';
 
 class UploadUserAvatarController {
   async handle(request: Request, response: Response): Promise<Response> {
-    const { file } = request;
     const { id } = request.user;
+    const url = request.file.filename;
 
     const uploadUserAvatarService = container.resolve(UploadUserAvatarService);
 
     try {
-      await uploadUserAvatarService.execute({ id, file });
+      await uploadUserAvatarService.execute({ id, url });
 
-      return response.status(201).send();
+      return response.status(204).send();
     } catch (error) {
       return response.status(400).json({ error: error.message });
     }

@@ -4,6 +4,8 @@ import { IToughtsRepository } from '../../modules/toughts/repositories/IToughtsR
 import { ToughtsRepository } from '../../modules/toughts/repositories/ToughtsRepository';
 import { IUsersRepository } from '../../modules/users/repositories/IUsersRepository';
 import { UsersRepository } from '../../modules/users/repositories/UsersRepository';
+import { IStorageProvider } from './providers/StorageProvider/IStorageProvider';
+import { S3StorageProvider } from './providers/StorageProvider/S3StorageProvider';
 
 container.registerSingleton<IToughtsRepository>(
   'ToughtsRepository',
@@ -13,4 +15,9 @@ container.registerSingleton<IToughtsRepository>(
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
   UsersRepository
+);
+
+container.registerSingleton<IStorageProvider>(
+  'StorageProvider',
+  S3StorageProvider
 );
