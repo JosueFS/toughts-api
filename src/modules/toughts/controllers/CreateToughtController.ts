@@ -6,11 +6,12 @@ import { CreateToughtService } from '../services/CreateToughtService';
 class CreateToughtController {
   async handle(request: Request, response: Response): Promise<Response> {
     const { message } = request.body;
+    const { id } = request.user;
 
     const createToughtService = container.resolve(CreateToughtService);
 
     try {
-      await createToughtService.execute({ message });
+      await createToughtService.execute({ author_id: id, message });
 
       return response.status(201).send();
     } catch (error) {

@@ -13,13 +13,13 @@ import { User } from '../../users/model/User';
 @Entity('toughts')
 class Tought {
   @PrimaryColumn()
-  id?: string;
+  id: string;
 
   @Column()
   message: string;
 
-  @ManyToOne(() => User)
-  @JoinColumn({ name: 'id' })
+  @ManyToOne(() => User, { eager: true })
+  @JoinColumn({ name: 'author_id' })
   author: User;
 
   @CreateDateColumn()

@@ -10,8 +10,9 @@ class ToughtsRepository implements IToughtsRepository {
     this.repository = getRepository(Tought);
   }
 
-  async create({ message }: ICreateToughtDTO): Promise<void> {
+  async create({ author, message }: ICreateToughtDTO): Promise<void> {
     const tought = this.repository.create({
+      author,
       message,
     });
 
@@ -21,17 +22,13 @@ class ToughtsRepository implements IToughtsRepository {
   async getAllToughts(): Promise<Tought[]> {
     const toughts = await this.repository.find();
 
+    console.log(toughts[0]);
+
     return toughts;
   }
 
   async findByKeyword(keyword: string): Promise<Tought[]> {
     const regex = new RegExp(keyword);
-
-    // const filteredToughts = this.toughts.filter((tought) => {
-    //   return !!tought.message.split(' ').filter((word) => {
-    //     return !!word.toLocaleLowerCase().match(regex);
-    //   }).length;
-    // });
 
     const filteredToughts = await this.repository.find({
       message: Like(`${regex}`),
