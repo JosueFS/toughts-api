@@ -4,7 +4,7 @@ import { v4 as uuid } from 'uuid';
 @Entity('users')
 class User {
   @PrimaryColumn()
-  id?: string;
+  id: string;
 
   @Column()
   name: string;
@@ -15,7 +15,7 @@ class User {
   @Column()
   avatar_url: string | null;
 
-  @Column()
+  @Column({ select: false })
   password: string;
 
   @CreateDateColumn()

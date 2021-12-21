@@ -14,15 +14,16 @@ class UsersRepository implements IUsersRepository {
     this.repository = getRepository(User);
   }
   async findById(id: string): Promise<User> {
-    const user = await this.repository.findOne({ id });
+    const user = await this.repository.findOne({
+      where: [{ id }],
+      select: ['id', 'name', 'email', 'password', 'avatar_url'],
+    });
 
     return user;
   }
 
   async addAvatarUrl({ id, url }: IAddAvatarURLDTO): Promise<void> {
     const user = await this.repository.findOne({ id });
-
-    if (!user) throw new Error('User not found');
 
     user.avatar_url = url;
 
@@ -52,7 +53,10 @@ class UsersRepository implements IUsersRepository {
   }
 
   async findByEmail(email: string): Promise<User> {
-    const user = await this.repository.findOne({ email });
+    const user = await this.repository.findOne({
+      where: [{ email }],
+      select: ['id', 'name', 'email', 'password', 'avatar_url'],
+    });
 
     return user;
   }
