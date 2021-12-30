@@ -1,6 +1,7 @@
 import 'reflect-metadata';
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import swaggerUi from 'swagger-ui-express';
+import 'express-async-errors';
 
 import { routes } from './routes';
 import swaggerFile from './swagger.json';
@@ -19,4 +20,23 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 app.use(routes);
 
-app.listen(PORT, () => console.log(`Server is running on port ${PORT}🔥`));
+app.use(
+  (err: Error, request: Request, response: Response, next: NextFunction) => {
+    console.error('Teste:', err);
+    if (err instanceof Error) {
+      return response.status(400).json({
+        status: 'error',
+        message: err.message,
+      });
+    }
+
+    return response.status(500).json({
+      status: 'error',
+      message: 'Internal Server Error',
+    });
+  }
+);
+
+app.listen(PORT, () =>
+  console.log(`Server is running on port updated ${PORT}🔥`)
+);
