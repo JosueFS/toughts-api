@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "RentalX Documentation",
+    "title": "Toughts Documentation",
     "description": "This is an API for Genial Toughts - <a href='https://github.com/JosueFS' target='_blank' rel='noopener noreferrer' class='link'>Github Repository</a>",
     "version": "1.0.0",
     "contact": {
@@ -10,6 +10,7 @@
         "url": "https://my-portfolio-josuefs.vercel.app/"
       }
   },
+
   "paths": {
     "/user": {
       "post": {
@@ -101,6 +102,11 @@
     },
     "/user/upload": {
       "post": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "summary": "Upload user avatar",
         "description": "Create 'avatar_url' field into user.",
         "requestBody": {
@@ -129,10 +135,52 @@
       
       }
     },
+    "/sessions": {
+      "post": {
+        "summary": "Login into App",
+        "description": "Authenticate user and generate jwt token",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password"
+                  }
+                },
+                "example": {
+                  "email": "jhondoe@email.com",
+                  "password": "password01"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Sucessful Created"
+          },
+          "409": {
+            "description": "Email or password incorrect!"
+          }
+        }
+      }
+    },
     "/tought": {
       "post": {
         "summary": "Create a tought",
         "description": "Create a new tought.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -200,17 +248,23 @@
             "in": "query",
             "description": "Keyword used to search for toughts",
             "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
+            "schema": {   
+              "type": "string"
             },
             "style": "simple"
           }
         ]
       }
       
+    }
+  },
+  "components": {        
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
     }
   }
 }
